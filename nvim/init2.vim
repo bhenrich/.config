@@ -1,6 +1,6 @@
 " --- Specify a directory for plugins (this is important) ---
 " e.g. ~/.vim/plugged on Unix-like systems or
-"     ~/vimfiles/plugged on Windows:
+"      ~/vimfiles/plugged on Windows:
 call plug#begin('~/.vim/plugged')
 
 " --- Sensible defaults ---
@@ -55,8 +55,8 @@ Plug 'numToStr/Comment.nvim'
 call plug#end()
 
 " --- Basic Settings ---
-set number         " Show line numbers
-set relativenumber " Show relative line numbers
+set number           " Show line numbers
+set relativenumber   " Show relative line numbers
 set autoindent
 set tabstop=4
 set shiftwidth=4
@@ -67,7 +67,7 @@ set ignorecase
 set hlsearch
 set incsearch
 set termguicolors    " Enable true colors support
-set background=dark    " Use a dark background
+set background=dark   " Use a dark background
 set scrolloff=8
 set signcolumn=yes
 set noerrorbells
@@ -175,13 +175,13 @@ EOF
 " --- Lint config ---
 lua << EOF
 require('lint').linters_by_ft = {
-    -- No linters configured for rust.
+  rust = {'rust_analyzer'},
 }
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-    callback = function()
-        require("lint").try_lint()
-    end,
+  callback = function()
+    require("lint").try_lint()
+  end,
 })
 EOF
 
