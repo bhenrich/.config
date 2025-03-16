@@ -9,7 +9,6 @@ Plug 'tpope/vim-sensible'
 " --- Themes ---
 Plug 'morhetz/gruvbox'
 
-
 " --- Optional: Fun game to improve Vim skills ---
 Plug 'ThePrimeagen/vim-be-good'
 
@@ -41,16 +40,27 @@ Plug 'nvim-tree/nvim-web-devicons'
 " --- Inline Diagnostics with nvim-lint ---
 Plug 'mfussenegger/nvim-lint'
 
-" --- Optional:  Status Line ---
+" --- Optional: Status Line ---
 Plug 'nvim-lualine/lualine.nvim'
 
-" --- Optional:  Fuzzy finder ---
+" --- Optional: Fuzzy finder ---
 Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-telescope/telescope-media-files.nvim'
 
 " --- Optional: Commenting ---
 Plug 'numToStr/Comment.nvim'
 " BROKEN Plug 'JoosepAlviste/nvim-ts-context-cmt'
+
+" --- Web Development Enhancements ---
+" CSS Intellisense via LSP
+Plug 'tailwindcss/tailwindcss-language-server', {'do': 'npm install -g tailwindcss-language-server'} " If you use Tailwind CSS
+Plug 'stylelint/stylelint', {'do': 'npm install -g stylelint'} " If you use Stylelint for CSS/SCSS/Less linting
+
+" HTML/Svelte Intellisense via LSP
+Plug 'sveltejs/language-tools', {'do': 'npm install -g @sveltejs/language-server'}
+
+" Autocompletion and Closing of HTML/XML tags
+Plug 'windwp/nvim-autopairs'
 
 call plug#end()
 
@@ -67,7 +77,7 @@ set ignorecase
 set hlsearch
 set incsearch
 set termguicolors    " Enable true colors support
-set background=dark    " Use a dark background
+set background=dark  " Use a dark background
 set scrolloff=8
 set signcolumn=yes
 set noerrorbells
@@ -126,30 +136,49 @@ cmp.setup({
 })
 EOF
 
-" --- LSP config ---
+"" LSP Setup
 lua << EOF
 local capabilities = require('cmp_nvim_lsp').default_capabilities(vim.lsp.protocol.make_client_capabilities())
 
+-- Setup for Svelte Language Server
+require'lspconfig'.svelte.setup{
+  capabilities = capabilities,
+}
+
+-- Setup for CSS Language Server
+require'lspconfig'.cssls.setup{
+  capabilities = capabilities,
+}
+
+-- Optional: Setup for Stylelint (if installed)
+local stylelint_capabilities = require('cmp_nvim_lsp').default_capabilities()
+require'lspconfig'.stylelint_lsp.setup {
+  capabilities = stylelint_capabilities,
+  filetypes = { 'css', 'scss', 'less' },
+}
+
+-- Setup for rust-analyzer
 require'lspconfig'.rust_analyzer.setup{
   capabilities = capabilities,
   settings = {
     ["rust-analyzer"] = {
       checkOnSave = {
         command = "clippy"
-      },
+      }
     }
   }
 }
 
+-- Diagnostic keymaps
 vim.keymap.set('n', '<space>e', vim.diagnostic.open_float)
 vim.keymap.set('n', '[d', vim.diagnostic.goto_prev)
 vim.keymap.set('n', ']d', vim.diagnostic.goto_next)
 vim.keymap.set('n', '<space>q', vim.diagnostic.setloclist)
+
+-- LSP attach autocommand
 vim.api.nvim_create_autocmd('LspAttach', {
   group = vim.api.nvim_create_augroup('UserLspConfig', {}),
   callback = function(ev)
-    -- Buffer local mappings.
-    -- See `:help vim.lsp.*` for documentation on any of the below functions
     local opts = { buffer = ev.buf }
     vim.keymap.set('n', 'gD', vim.lsp.buf.declaration, opts)
     vim.keymap.set('n', 'gd', vim.lsp.buf.definition, opts)
@@ -175,13 +204,13 @@ EOF
 " --- Lint config ---
 lua << EOF
 require('lint').linters_by_ft = {
-    -- No linters configured for rust.
+  -- No linters configured for rust.
 }
 
 vim.api.nvim_create_autocmd({ "BufWritePost" }, {
-    callback = function()
-        require("lint").try_lint()
-    end,
+  callback = function()
+    require("lint").try_lint()
+  end,
 })
 EOF
 
@@ -236,5 +265,10 @@ EOF
 
 " --- Nvim-tree config ---
 lua << EOF
-require("nvim-tree").setup {}
+require('nvim-tree').setup {}
+EOF
+
+" --- Autopairs config ---
+lua << EOF
+require("nvim-autopairs").setup {}
 EOF
