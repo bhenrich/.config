@@ -87,7 +87,10 @@ ENABLE_CORRECTION="true"
 
 # Oh My Posh
 # export PATH=/opt/homebrew/bin:$PATH
-eval "$(oh-my-posh init zsh --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/catppuccin_mocha.omp.json)"
+#eval "$(oh-my-posh init zsh --config https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/catppuccin_mocha.omp.json)"
+
+eval "$(oh-my-posh init zsh --config /home/yuna/.config/omp/tiwahu.json)"
+
 # eval "$(oh-my-posh init zsh --config /Users/yunii/.config/omp/themes/cattpuccin_latte.json)"
 #export POSH_THEME="https://raw.githubusercontent.com/JanDeDobbeleer/oh-my-posh/refs/heads/main/themes/bubblesextra.omp.json"
 
@@ -119,7 +122,8 @@ eval "$(zoxide init zsh)"
 # export PATH=/Users/yunii/.local/bin:$PATH
 
 # Aliases
-alias ls="eza"
+alias lsl="eza --icons=always -lah --group-directories-first"
+alias ls="eza --icons=always --group-directories-first"
 alias cd="z"
 alias cpc="xclip -sel c < "
 
@@ -132,4 +136,9 @@ alias tc="kitten @set-tab-color"
 
 # }}}
 alias escreen="xrandr --output HDMI-1 --auto --above eDP-1"
+
+
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
+[ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
