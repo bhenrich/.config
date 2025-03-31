@@ -1,0 +1,13 @@
+[colors]
+directory_color = "#0000FF"
+file_color = "#FCBA03"
+hidden_directory_color = "#888888"
+hidden_file_color = "#888888"
+selected_background_color = "#000000"
+selected_foreground_color = "#FFFFFF"
+[keybinds]
+entry_up = "UpArrow"
+entry_down = "DownArrow"
+dir_down = "RightArrow"
+dir_up = "LeftArrow"
+exit = "Escape"
