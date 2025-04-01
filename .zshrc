@@ -127,18 +127,16 @@ alias ls="eza --icons=always --group-directories-first"
 alias cd="z"
 alias cpc="xclip -sel c < "
 
-#alias yt2info="python3 /Users/yunii/Projects/youtube-summarizer/main.py"
+alias zshcopy="cat /home/yuna/.zshrc > /home/yuna/.config/.zshrc"
 
-#alias ::="ltools"
-
+# Kitty
 alias tt="kitten @set-tab-title"
 alias tc="kitten @set-tab-color"
 
-# }}}
 alias escreen="xrandr --output HDMI-1 --auto --above eDP-1"
 
+# }}}
 
 export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
-
