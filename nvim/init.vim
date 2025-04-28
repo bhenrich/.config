@@ -37,6 +37,9 @@ Plug 'MunifTanjim/nui.nvim'
 Plug 'nvim-tree/nvim-tree.lua'
 Plug 'nvim-tree/nvim-web-devicons'
 
+" --- Blame ---
+Plug 'FabijanZulj/blame.nvim'
+
 " --- Inline Diagnostics with nvim-lint ---
 Plug 'mfussenegger/nvim-lint'
 
@@ -95,6 +98,16 @@ augroup filetype_settings
   autocmd FileType rust setlocal sw=4 ts=4 sts=0
 augroup END
 
+" --- Blame config ---
+lua << EOF
+require('blame').setup {
+  -- You can add configuration options here later if needed
+  -- For example:
+  -- blame_options = { '-w' }, -- Ignore whitespace changes
+  -- date_format = '%Y-%m-%d %H:%M',
+}
+EOF
+
 " --- Keymaps ---
 let mapleader = " "
 nnoremap <leader>pv :NvimTreeToggle<CR>
@@ -107,6 +120,9 @@ nnoremap <leader>fm <cmd>Telescope lsp_document_symbols<cr>
 nnoremap <leader>fM <cmd>Telescope lsp_workspace_symbols<cr>
 nnoremap <leader>fd <cmd>Telescope lsp_references<cr>
 nnoremap <leader>fc <cmd>Telescope lsp_definitions<cr>
+
+" Toggle Git Blame
+nnoremap <leader>gb :BlameToggle<CR> 
 
 " --- Completion config ---
 lua << EOF
@@ -164,6 +180,40 @@ require'lspconfig'.rust_analyzer.setup{
     ["rust-analyzer"] = {
       checkOnSave = {
         command = "clippy"
+      }
+    }
+  }
+}
+
+-- Setup for Python LSP Server (pylsp)
+require'lspconfig'.pylsp.setup{
+  capabilities = capabilities,
+  -- Optional: Server-specific settings
+  -- 'python-lsp-server' uses plugins. You might need to install
+  -- extra packages (e.g., pip install python-lsp-server[all] or specific
+  -- plugins like flake8, black, mypy) in your Python environment
+  -- for these settings to work.
+  settings = {
+    pylsp = {
+      plugins = {
+        -- Enable flake8 linting (requires flake8 installed)
+        -- flake8 = { enabled = true },
+        -- Enable black formatting (requires black installed)
+        -- black = { enabled = true },
+        -- Enable mypy type checking (requires mypy installed)
+        -- mypy = { enabled = true },
+
+        -- Example: Disable default plugins if you prefer others
+        pycodestyle = { enabled = false },
+        autopep8 = { enabled = false },
+        pylint = { enabled = true },
+
+        -- Configure plugin behaviour (example for flake8)
+        -- flake8 = {
+        --   enabled = true,
+        --   ignore = {'E501'}, -- Ignore long lines
+        --   maxLineLength = 100
+        -- },
       }
     }
   }
